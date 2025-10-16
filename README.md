@@ -37,7 +37,7 @@ go get github.com/AnatoleLucet/tiq
 
 `tiq` is a modular Golang Struct tags parser. It offers a very simple [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) to extract what you need from tags, and multiple APIs to [inspect](#tiqinspect) and [update](#tiqset) user defined structs.
 
-The DSL is designed to be as straight forward as possible for you to pick up and get what's hapening at a glance, even if you've never used `tiq` before.
+The DSL is designed to be as straightforward as possible for you to pick up and get what's happening at a glance, even if you've never used `tiq` before.
 
 ```go
 import (
@@ -90,7 +90,7 @@ func load[T any](conf *T) (*T, error) {
 
 ### The DSL
 
-The DSL is based on [ExprLang](https://expr-lang.org/), a simple but powerfully expression language.
+The DSL is based on [ExprLang](https://expr-lang.org/), a simple but powerful expression language.
 
 > Don't try to use functions from the official ExprLang docs, they probably won't work. Instead, take a look at `tiq`'s [function set](#functions) to find what you need!
 
@@ -117,7 +117,7 @@ The DSL is based on [ExprLang](https://expr-lang.org/), a simple but powerfully 
 # What this means is that `"foo=bar" | get("foo")` is equivalent to `get("foo=bar", "foo")`.
 
 # To learn more about tiq's syntax, check out ExprLang's docs at https://expr-lang.org/docs/getting-started.
-# But remember most functions from ExprLang wont work because tiq uses its work functions set (descibed bellow).
+# But remember most functions from ExprLang won't work because tiq uses its own functions set (described below).
 ```
 
 #### Functions
@@ -163,7 +163,7 @@ type EnvSchema struct {
 	Oneof    []string `tag:"env | get('oneof') | split('|')"`
 }
 
-env, err := tiq.Parse[EnvSchema](field) // field is usally retrieve via tiq.Inspect
+env, err := tiq.Parse[EnvSchema](field) // field is usually retrieved via tiq.Inspect
 
 env.Name // if `field` has a tag `env:"name=foo"`, this will be set to "foo", else ""
 env.Optional // if `field` has a tag `env:"optional"`, this will be set to true, else false

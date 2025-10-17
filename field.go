@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+
+	"github.com/AnatoleLucet/as"
 )
 
 type Field struct {
@@ -57,4 +59,15 @@ func (f *Field) Set(value any) error {
 
 	f.Value.Set(v.Convert(f.Value.Type()))
 	return nil
+}
+
+// SetFrom updates the field's value to the provided value after converting it to the appropriate type.
+// See as.Kind for supported conversions.
+func (f *Field) SetFrom(value any) error {
+	v, err := as.Kind(f.Value.Type().Kind(), value)
+	if err != nil {
+		return fmt.Errorf("%w: cannot convert %T to %s: %v", ErrCannotConvert, value, f.Value.Type(), err)
+	}
+
+	return f.Set(v)
 }

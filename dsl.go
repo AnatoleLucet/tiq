@@ -3,10 +3,8 @@ package tiq
 import (
 	"errors"
 	"fmt"
-	"reflect"
 	"strings"
 
-	"github.com/AnatoleLucet/as"
 	"github.com/expr-lang/expr"
 	"github.com/expr-lang/expr/vm"
 )
@@ -34,12 +32,10 @@ func parseTags[Schema any](tags map[string]string) (*Schema, error) {
 			continue
 		}
 
-		output, err = convertTo(f.Value.Type(), output)
+		err = f.SetFrom(output)
 		if err != nil {
-			return nil, fmt.Errorf("%w: cannot convert %T to %s: %v", ErrCannotConvert, output, f.Value.Type(), err)
+			return nil, err
 		}
-
-		f.Set(output)
 	}
 
 	return tag, nil
@@ -235,68 +231,4 @@ func fnDefault(args ...any) (any, error) {
 	}
 
 	return args[0], nil
-}
-
-func convertTo(target reflect.Type, value any) (any, error) {
-	if reflect.TypeOf(value).Kind() == target.Kind() {
-		return value, nil
-	}
-
-	switch target.Kind() {
-	case reflect.String:
-		return as.String(value)
-	case reflect.Bool:
-		return as.Bool(value)
-	case reflect.Int:
-		return as.Int(value)
-	case reflect.Int8:
-		return as.Int8(value)
-	case reflect.Int16:
-		return as.Int16(value)
-	case reflect.Int32:
-		return as.Int32(value)
-	case reflect.Int64:
-		return as.Int64(value)
-	case reflect.Uint:
-		return as.Uint(value)
-	case reflect.Uint8:
-		return as.Uint8(value)
-	case reflect.Uint16:
-		return as.Uint16(value)
-	case reflect.Uint32:
-		return as.Uint32(value)
-	case reflect.Uint64:
-		return as.Uint64(value)
-	case reflect.Float32:
-		return as.Float32(value)
-	case reflect.Float64:
-		return as.Float64(value)
-	case reflect.Slice:
-		return convertToSlice(target, value)
-	}
-
-	return nil, fmt.Errorf("unsupported target type: %s", target.Kind())
-}
-
-// convertToSlice converts the given value to a slice of the target type (or wraps it in a slice if not already a slice).
-// It returns a slice casted to any, but with properly typed elements, so the result is compatible with reflect.Value.Convert.
-func convertToSlice(target reflect.Type, value any) (any, error) {
-	val := reflect.ValueOf(value)
-	targetType := target.Elem()
-
-	if val.Kind() != reflect.Slice {
-		val = reflect.ValueOf([]any{value})
-	}
-
-	slice := reflect.MakeSlice(target, 0, val.Len())
-	for i := 0; i < val.Len(); i++ {
-		converted, err := convertTo(targetType, val.Index(i).Interface())
-		if err != nil {
-			return nil, fmt.Errorf("error converting element %d: %w", i, err)
-		}
-
-		slice = reflect.Append(slice, reflect.ValueOf(converted))
-	}
-
-	return slice.Interface(), nil
 }

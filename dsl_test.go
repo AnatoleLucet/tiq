@@ -1,7 +1,6 @@
 package tiq
 
 import (
-	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -176,65 +175,6 @@ func TestFnDefault(t *testing.T) {
 		result, err := fnDefault(nil, "default")
 		assert.NoError(t, err)
 		assert.Equal(t, "default", result)
-	})
-}
-
-func TestConvertTo(t *testing.T) {
-	t.Run("returns value when types already match", func(t *testing.T) {
-		result, err := convertTo(reflect.TypeOf(""), "test")
-		assert.NoError(t, err)
-		assert.Equal(t, "test", result)
-	})
-
-	t.Run("converts to string", func(t *testing.T) {
-		result, err := convertTo(reflect.TypeOf(""), 123)
-		assert.NoError(t, err)
-		assert.Equal(t, "123", result)
-	})
-
-	t.Run("converts to bool", func(t *testing.T) {
-		result, err := convertTo(reflect.TypeOf(true), "true")
-		assert.NoError(t, err)
-		assert.True(t, result.(bool))
-	})
-
-	t.Run("converts to int", func(t *testing.T) {
-		result, err := convertTo(reflect.TypeOf(0), "42")
-		assert.NoError(t, err)
-		assert.Equal(t, 42, result)
-	})
-
-	t.Run("returns error for unsupported type", func(t *testing.T) {
-		type CustomStruct struct{}
-		_, err := convertTo(reflect.TypeOf(CustomStruct{}), "value")
-		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "unsupported target type")
-	})
-}
-
-func TestConvertToSlice(t *testing.T) {
-	t.Run("converts slice of strings", func(t *testing.T) {
-		result, err := convertToSlice(reflect.TypeOf([]string{}), []string{"a", "b", "c"})
-		assert.NoError(t, err)
-		assert.Equal(t, []string{"a", "b", "c"}, result)
-	})
-
-	t.Run("wraps non-slice value in slice", func(t *testing.T) {
-		result, err := convertToSlice(reflect.TypeOf([]string{}), "single")
-		assert.NoError(t, err)
-		assert.Equal(t, []string{"single"}, result)
-	})
-
-	t.Run("converts element types", func(t *testing.T) {
-		result, err := convertToSlice(reflect.TypeOf([]int{}), []string{"1", "2", "3"})
-		assert.NoError(t, err)
-		assert.Equal(t, []int{1, 2, 3}, result)
-	})
-
-	t.Run("returns error when element conversion fails", func(t *testing.T) {
-		_, err := convertToSlice(reflect.TypeOf([]int{}), []string{"not", "numbers"})
-		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "error converting element")
 	})
 }
 

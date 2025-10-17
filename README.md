@@ -81,7 +81,9 @@ func load[T any](conf *T) (*T, error) {
         // is correct according what was parsed in the `env` variable:
         // validate(env, value)
 
-        field.Set(value)
+        // .SetFrom() will convert the value to the target field's type using `github.com/AnatoleLucet/as`.
+        // Alternatively you could use .Set() to try and set the field's value directly without conversion.
+        field.SetFrom(value)
     }
 
     return conf
@@ -143,6 +145,7 @@ inspector, err := tiq.Inspect(&mystruct)
 field, ok := inspector.Field("Name")
 
 field.Set("value") // update the field's value
+field.SetFrom("value") // same as .Set() but converts the value to the field's type if necessary
 field.Tag("mytag") // returns the content of `mytag:"content"`
 field.Tags() // returns every tags of the field in a map[string]string
 

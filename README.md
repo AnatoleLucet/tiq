@@ -90,6 +90,13 @@ func load[T any](conf *T) (*T, error) {
 }
 ```
 
+<details>
+<summary>Real world example</summary>
+
+If you want to see `tiq` in action on a real project, checkout [environ](https://github.com/AnatoleLucet/environ/blob/19c756e16da1f6a2b8bbf3d614f9c56da2b264c0/environ.go#L26-L57), another project of mine, powered by `tiq`!
+
+</details>
+
 ### The DSL
 
 The DSL is based on [ExprLang](https://expr-lang.org/), a simple but powerful expression language.

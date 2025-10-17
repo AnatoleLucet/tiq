@@ -3,7 +3,7 @@ module github.com/AnatoleLucet/tiq
 go 1.25.1
 
 require (
-	github.com/AnatoleLucet/as v0.0.0-20251017134352-8c78f9ad661a
+	github.com/AnatoleLucet/as v0.0.0-20251017165827-c04b6c0b89a2
 	github.com/expr-lang/expr v1.17.6
 	github.com/stretchr/testify v1.11.1
 )

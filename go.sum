@@ -1,7 +1,5 @@
-github.com/AnatoleLucet/as v0.0.0-20251015083633-dfdfb7ad12f9 h1:z7r5TsZXZCSz9ZFwiseBLDQZL5r595ND2cbQVq9eaMU=
-github.com/AnatoleLucet/as v0.0.0-20251015083633-dfdfb7ad12f9/go.mod h1:KlbV1scTRbQemubm7T/qo0zRsIGO0zqDAx74Q6RRz5A=
-github.com/AnatoleLucet/as v0.0.0-20251017134352-8c78f9ad661a h1:KcNXauv6C9Ne2FXxmZu2c6I+UblnpC8rTeyvm88uPPw=
-github.com/AnatoleLucet/as v0.0.0-20251017134352-8c78f9ad661a/go.mod h1:KlbV1scTRbQemubm7T/qo0zRsIGO0zqDAx74Q6RRz5A=
+github.com/AnatoleLucet/as v0.0.0-20251017165827-c04b6c0b89a2 h1:Of8vbvrDAeh0bQ2PNqBwGB8tljwaCxRHO8q2g+tiLpc=
+github.com/AnatoleLucet/as v0.0.0-20251017165827-c04b6c0b89a2/go.mod h1:KlbV1scTRbQemubm7T/qo0zRsIGO0zqDAx74Q6RRz5A=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/expr-lang/expr v1.17.6 h1:1h6i8ONk9cexhDmowO/A64VPxHScu7qfSl2k8OlINec=

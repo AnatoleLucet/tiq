@@ -62,7 +62,7 @@ func (f *Field) Set(value any) error {
 }
 
 // SetFrom updates the field's value to the provided value after converting it to the appropriate type.
-// See as.Kind for supported conversions.
+// See as.Type for supported conversions.
 func (f *Field) SetFrom(value any) error {
 	typ := f.Value.Type()
 	isPtr := typ.Kind() == reflect.Pointer
@@ -71,7 +71,7 @@ func (f *Field) SetFrom(value any) error {
 		typ = typ.Elem()
 	}
 
-	v, err := as.Kind(typ.Kind(), value)
+	v, err := as.Type(typ, value)
 	if err != nil {
 		return fmt.Errorf("%w: cannot convert %T to %s: %v", ErrCannotConvert, value, f.Value.Type(), err)
 	}

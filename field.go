@@ -64,9 +64,22 @@ func (f *Field) Set(value any) error {
 // SetFrom updates the field's value to the provided value after converting it to the appropriate type.
 // See as.Kind for supported conversions.
 func (f *Field) SetFrom(value any) error {
-	v, err := as.Kind(f.Value.Type().Kind(), value)
+	typ := f.Value.Type()
+	isPtr := typ.Kind() == reflect.Pointer
+
+	if isPtr {
+		typ = typ.Elem()
+	}
+
+	v, err := as.Kind(typ.Kind(), value)
 	if err != nil {
 		return fmt.Errorf("%w: cannot convert %T to %s: %v", ErrCannotConvert, value, f.Value.Type(), err)
+	}
+
+	if isPtr {
+		ptr := reflect.New(typ)
+		ptr.Elem().Set(reflect.ValueOf(v).Convert(typ))
+		v = ptr.Interface()
 	}
 
 	return f.Set(v)

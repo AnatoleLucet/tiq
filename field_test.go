@@ -330,3 +330,73 @@ func TestField_Set(t *testing.T) {
 		assert.Equal(t, "test", testStruct.Field1.Value)
 	})
 }
+
+func TestField_SetFrom(t *testing.T) {
+	t.Run("converts string to int", func(t *testing.T) {
+		type TestStruct struct {
+			Field1 int
+		}
+
+		testStruct := TestStruct{}
+		inspector, err := Inspect(&testStruct)
+		assert.NoError(t, err)
+
+		field, ok := inspector.Field("Field1")
+		assert.True(t, ok)
+
+		err = field.SetFrom("42")
+		assert.NoError(t, err)
+		assert.Equal(t, 42, testStruct.Field1)
+	})
+
+	t.Run("converts string to pointer int", func(t *testing.T) {
+		type TestStruct struct {
+			Field1 *int
+		}
+
+		testStruct := TestStruct{}
+		inspector, err := Inspect(&testStruct)
+		assert.NoError(t, err)
+
+		field, ok := inspector.Field("Field1")
+		assert.True(t, ok)
+
+		err = field.SetFrom("42")
+		assert.NoError(t, err)
+		assert.NotNil(t, testStruct.Field1)
+		assert.Equal(t, 42, *testStruct.Field1)
+	})
+
+	t.Run("returns error for invalid conversion", func(t *testing.T) {
+		type TestStruct struct {
+			Field1 int
+		}
+
+		testStruct := TestStruct{}
+		inspector, err := Inspect(&testStruct)
+		assert.NoError(t, err)
+
+		field, ok := inspector.Field("Field1")
+		assert.True(t, ok)
+
+		err = field.SetFrom("not a number")
+		assert.ErrorIs(t, err, ErrCannotConvert)
+		assert.Contains(t, err.Error(), "cannot convert")
+	})
+
+	t.Run("returns error when field is not settable", func(t *testing.T) {
+		type TestStruct struct {
+			Field1 int
+		}
+
+		testStruct := TestStruct{}
+		inspector, err := Inspect(testStruct) // not a pointer
+		assert.NoError(t, err)
+
+		field, ok := inspector.Field("Field1")
+		assert.True(t, ok)
+
+		err = field.SetFrom("42")
+		assert.ErrorIs(t, err, ErrFieldNotSettable)
+	})
+}
